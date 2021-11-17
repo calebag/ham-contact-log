@@ -12,7 +12,7 @@ class Entry:
     country: str
     state: str
     city: str
-    coordinates: list  # possibly change to tuple
+    coordinates: tuple
     talk_group: str
     other: str
     tags: list

@@ -117,10 +117,36 @@ def show_tags():
         print(c.fetchall())
 
 
-def show_log_tag_join():
+def show_log_tag_join():  # SELECT query needs to be fixed
+    conn = connect()
+    conn.execute("PRAGMA foreign_keys = 1")
+    c = conn.cursor()
+
+    with conn:
+        c.execute('''SELECT * FROM log_entries
+            LEFT OUTER JOIN log_tag_join ON log_entries.id = log_tag_join.log_id
+            LEFT OUTER JOIN tags_table ON log_tag_join.tag_id = tags_table.id
+        ''')
+        print(c.fetchall())
+
+
+def get_coordinates():
     conn = connect()
     c = conn.cursor()
 
     with conn:
-        c.execute("SELECT tag FROM log_entries CROSS JOIN tags_table")
-        print(c.fetchall())
+        c.execute("SELECT coord_x, coord_y FROM log_entries")
+
+        return c.fetchall()
+
+
+def get_coordinates_and_info():
+    conn = connect()
+    c = conn.cursor()
+
+    with conn:
+        c.execute("SELECT coord_x, coord_y, callsign, name FROM log_entries")
+
+        return c.fetchall()
+
+# TODO: excel import/export
